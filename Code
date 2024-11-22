@@ -1,0 +1,59 @@
+/**
+ * Author: Ruben Osornio
+ * Program: Producer-Consumer Problem Using Semaphores
+ */
+
+#define _REENTRANT
+#include <pthread.h>
+#include <stdio.h>
+#include <semaphore.h>
+#include <unistd.h>
+
+#define BUFFER_SIZE 15 // Circular buffer size
+#define EOF_MARKER '*' // Special character to signal EOF
+
+// Shared buffer and indices
+char buffer[BUFFER_SIZE];
+int in = 0, out = 0;
+
+// Semaphores
+sem_t sem_items;    // Tracks the number of items in the buffer
+sem_t sem_space;    // Tracks available space in the buffer
+sem_t sem_mutex;    // Protects the buffer (mutual exclusion)
+
+// Producer thread function
+void* producer(void* arg) {
+    FILE* fp = fopen("mytest.dat", "r");
+    if (!fp) {
+        perror("Failed to open file");
+        pthread_exit(NULL);
+    }
+
+    char newChar;
+    while (fscanf(fp, "%c", &newChar) != EOF) {
+        // Wait for space and lock the buffer
+        sem_wait(&sem_space);
+        sem_wait(&sem_mutex);
+
+        // Add the character to the circular buffer
+        buffer[in] = newChar;
+        in = (in + 1) % BUFFER_SIZE;
+
+        // Unlock the buffer and signal an item is added
+        sem_post(&sem_mutex);
+        sem_post(&sem_items);
+    }
+
+    // Signal EOF with a special marker
+    sem_wait(&sem_space);
+    sem_wait(&sem_mutex);
+
+    buffer[in] = EOF_MARKER;
+    in = (in + 1) % BUFFER_SIZE;
+
+    sem_post(&sem_mutex);
+    sem_post(&sem_items);
+
+    fclose(fp);
+    pthread_exit(NULL);
+}
