@@ -92,7 +92,7 @@ Runtime Errors:
 Verify that mytest.dat exists and contains valid data.
 Ensure permissions to read/write files in the directory.
 No Output:
-
 Confirm that the producer is writing to the buffer and the consumer is processing data.
 Check semaphore initialization and thread creation.
+
 <img width="524" alt="Screenshot 2024-11-22 at 5 14 07 PM" src="https://github.com/user-attachments/assets/62d59d1b-7807-47a2-9161-f53a87a7afac">
