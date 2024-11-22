@@ -37,6 +37,7 @@ Flags:
 5. Run the Program
 Execute the compiled program:
 ./project3
+
 5. Expected Output
 The program will read the characters from mytest.dat and print them to the screen, one by one, with a 1-second delay between each character. For example:
 Hello, this is a test for the producer-consumer problem!
