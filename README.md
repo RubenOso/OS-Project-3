@@ -34,7 +34,8 @@ Flags:
 -lpthread: Links the POSIX threading library.
 -lrt: Links the real-time library for semaphore functions.
 -o project3: Specifies the output executable name.
-5. Run the Program
+
+4. Run the Program
 Execute the compiled program:
 ./project3
 
